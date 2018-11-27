@@ -2,6 +2,7 @@ package com.taireum;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.tx.ManagedTransaction;
@@ -10,6 +11,7 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -65,15 +67,36 @@ public class Transfer extends ManagedTransaction {
         return send(resolvedAddress, data, weiValue.toBigIntegerExact(), gasPrice, gasLimit);
     }
 
+    private EthSendTransaction sendAsync(
+            String toAddress, String data, BigDecimal value, Convert.Unit unit, BigInteger gasPrice,
+            BigInteger gasLimit) throws IOException{
+
+        BigDecimal weiValue = Convert.toWei(value, unit);
+        if (!Numeric.isIntegerValue(weiValue)) {
+            throw new UnsupportedOperationException(
+                    "Non decimal Wei value provided: " + value + " " + unit.toString()
+                            + " = " + weiValue + " Wei");
+        }
+
+        String resolvedAddress = ensResolver.resolve(toAddress);
+        return transactionManager.sendTransaction(gasPrice, gasLimit, resolvedAddress, data,  weiValue.toBigIntegerExact());
+
+    }
     public static RemoteCall<TransactionReceipt> sendFunds(
             Web3j web3j, Credentials credentials,
-            String toAddress,  String data, BigDecimal value, Convert.Unit unit) throws InterruptedException,
-            IOException, TransactionException {
+            String toAddress,  String data, BigDecimal value, Convert.Unit unit) {
 
         TransactionManager transactionManager = new RawTransactionManager(web3j, credentials);
 
         return new RemoteCall<>(() ->
                 new Transfer(web3j, transactionManager).send(toAddress, data, value, unit, DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT));
+    }
+
+    public static EthSendTransaction sendFundsAsync(Web3j web3j, Credentials credentials,
+                                          String toAddress,  String data, BigDecimal value, Convert.Unit unit) throws IOException {
+
+        TransactionManager transactionManager = new RawTransactionManager(web3j, credentials);
+        return new Transfer(web3j, transactionManager).sendAsync(toAddress, data, value, unit, DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT);
     }
 
     /**
