@@ -10,12 +10,13 @@ version '0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    maven { url "http://127.0.0.1:8081/repository/maven-releases/" }
     mavenCentral()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile ('org.web3j:core:4.0.0')
+    implementation group: 'com.taireum', name: 'web3jplus', version: '0.1'
 
 }
 
@@ -31,7 +32,7 @@ uploadArchives {
             }
             pom.project {
                 version '0.1'
-                artifactId 'taisdk4j'
+                artifactId ARTIFACTID
                 groupId GROUP_ID
                 packaging TYPE
                 description DESCRIPTION
