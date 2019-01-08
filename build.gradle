@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.taireum.taisdk4j'
-version '0.1-SNAPSHOT'
+version '0.2-SNAPSHOT'
 
 
 sourceCompatibility = 1.8
@@ -31,7 +31,7 @@ uploadArchives {
                 authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
             }
             pom.project {
-                version '0.1'
+                version VERSION
                 artifactId ARTIFACTID
                 groupId GROUP_ID
                 packaging TYPE
