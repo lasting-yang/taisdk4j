@@ -79,7 +79,7 @@ public class TransferTest {
 //            CCC_sol_CCC ccc_sol_ccc = CCC_sol_CCC.deploy(web3j, credentials, new DefaultGasProvider(), "testCompany", "test@mail.com", "test_remark",
 //                    "enode://3bfdea8a72316ea1fe3b0f5d0bf1be3b12eeef3bbd77b85e2e820357063ae69169d20ecff972a1e42641f141247509bc14024eab5bcfdd64e71c253e1ba7b34d@127.0.0.1:30305?discport=0").send();
 
-            CCC_sol_CCC ccc_sol_ccc = CCC_sol_CCC.load("0xb659b42b31877386e26d34c99717f3b20ffeb827", web3j, credentials, DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT);
+            CCC_sol_CCC ccc_sol_ccc = CCC_sol_CCC.load("0xb659b42b31877386e26d34c99717f3b20ffeb827", web3j, credentials, new DefaultGasProvider());
 
             ccc_sol_ccc.applyMember("testCompany3", "test3@example.com", "test3_remark", "test_enode:3//", "0x937286bab9844ca10d45e53c4bae1afd096a1bc5").send();
             BigInteger sum = ccc_sol_ccc.ShowSum().send();
