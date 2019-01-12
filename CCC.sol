@@ -103,7 +103,7 @@ contract CCC {
 
         if (C_votes_mine[C_company[_tocompanyid].owner].ticketNum == Members_mine_sum_id) {
             C_Member_mine[C_company[_tocompanyid].owner] = 1;
-            Members_mine_sum_id;
+            Members_mine_sum_id++;
 
         }
     }
