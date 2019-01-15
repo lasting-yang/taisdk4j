@@ -43,6 +43,16 @@ contract CCC {
     mapping(string => uint) C_company_stat;
     mapping(address => uint) C_account_stat;
 
+    event EventCCC(
+        uint indexed EventType,
+        uint _fromid,
+        uint _toid,
+        uint _num,
+        address _sender,
+        address _toAddress,
+        string _toEnode
+    );
+
 
     //投票后 poa的总票数
     uint Members_mine_sum_id;
@@ -82,6 +92,8 @@ contract CCC {
             C_Members[C_company[_tocompanyid].owner] = 1;
             Members_sum_id++;
 
+            emit EventCCC(1, _fromcompanyid, _tocompanyid, Members_sum_id, msg.sender, C_company[_tocompanyid].owner, C_company[_tocompanyid].enode);
+
         }
     }
 
@@ -105,6 +117,7 @@ contract CCC {
             C_Member_mine[C_company[_tocompanyid].owner] = 1;
             Members_mine_sum_id++;
 
+            emit EventCCC(2, _fromcompanyid, _tocompanyid, Members_mine_sum_id, msg.sender, C_company[_tocompanyid].owner, C_company[_tocompanyid].enode);
         }
     }
 
